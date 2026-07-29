@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>My Science Briefing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="font-family: -apple-system, sans-serif; max-width: 640px; margin: 3rem auto; padding: 0 1rem;">
+  <h1>My Science Briefing</h1>
+  <p>Daily audio briefing on new PubMed and journal publications.</p>
+  <p>
+    Subscribe in any podcast app using this feed URL:<br />
+    <code id="feed-url">episodes.xml</code>
+  </p>
+  <p><a href="episodes.xml">View raw RSS feed</a></p>
+  <script>
+    document.getElementById("feed-url").textContent = new URL("episodes.xml", window.location.href).toString();
+  </script>
+</body>
+</html>

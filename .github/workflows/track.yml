@@ -1,0 +1,45 @@
+name: Track publications and publish episode
+
+on:
+  schedule:
+    # 11:30 UTC, Mon-Fri (~7:30am ET / 6:30am CT — adjust for your timezone and DST as needed)
+    - cron: "30 11 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tracker
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          PUBMED_EMAIL: ${{ secrets.PUBMED_EMAIL }}
+          PUBMED_API_KEY: ${{ secrets.PUBMED_API_KEY }}
+        run: python main.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "science-tracker-bot"
+          git config user.email "actions@github.com"
+          git add docs/ seen_ids.json
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "Publish episode $(date -u +%Y-%m-%d)"
+            git push
+          fi

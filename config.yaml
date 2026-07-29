@@ -1,0 +1,64 @@
+# Science Literature & Publication Audio Tracker — configuration
+#
+# Edit the sections below to control what gets searched and how the podcast sounds.
+
+pubmed:
+  # PubMed search queries (E-utilities query syntax). Each query is run independently
+  # and results are merged/deduped. Leave the list empty to skip PubMed entirely.
+  #
+  # Examples:
+  #   - "CRISPR delivery"
+  #   - "GLP-1 receptor agonist AND obesity"
+  #   - "Smith J[Author] AND diabetes"
+  queries: []
+
+  # How many days back to search on each run (keep small since this runs daily).
+  lookback_days: 3
+
+  # Max articles to pull per query per run (safety cap).
+  max_results_per_query: 25
+
+journals:
+  # RSS/table-of-contents feed URLs for journals to monitor directly.
+  # Starter list of high-impact general science / medicine journals — prune or extend as you like.
+  - name: "Nature"
+    rss_url: "https://www.nature.com/nature.rss"
+  - name: "Science"
+    rss_url: "https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science"
+  - name: "Cell"
+    rss_url: "https://www.cell.com/cell/current.rss"
+  - name: "NEJM"
+    rss_url: "https://www.nejm.org/action/showFeed?type=etoc&feed=rss&jc=nejm"
+  - name: "The Lancet"
+    rss_url: "https://www.thelancet.com/rssfeed/lancet_current.xml"
+  - name: "PNAS"
+    rss_url: "https://www.pnas.org/action/showFeed?type=etoc&feed=rss&jc=pnas"
+  - name: "Nature Medicine"
+    rss_url: "https://www.nature.com/nm.rss"
+  - name: "Nature Genetics"
+    rss_url: "https://www.nature.com/ng.rss"
+  - name: "JAMA"
+    rss_url: "https://jamanetwork.com/rss/site_3/67.xml"
+
+curation:
+  # Anthropic model used to select noteworthy articles and write spoken-style summaries.
+  model: "claude-sonnet-4-5-20250929"
+  # Extra guidance appended to the curation prompt — describe what you personally care about.
+  # This is what actually determines which articles get selected when queries/journals are broad.
+  interest_profile: >
+    Prioritize articles with high clinical or scientific significance, novel methods,
+    or large potential impact on the field. Skip incremental or narrow-interest studies.
+
+podcast:
+  title: "My Science Briefing"
+  description: "Daily audio briefing on new PubMed and journal publications."
+  author: "Science Tracker"
+  # Must match where GitHub Pages serves this repo's docs/ folder from, e.g.:
+  # https://<github-username>.github.io/<repo-name>
+  site_url: "https://aristromberg.github.io/science-tracker"
+
+tts:
+  # ElevenLabs voice ID to narrate the episode. Default is ElevenLabs' public "Rachel" voice;
+  # replace with any voice ID from your ElevenLabs account (Voice Library or custom clone).
+  voice_id: "21m00Tcm4TlvDq8ikWAM"
+  model_id: "eleven_multilingual_v2"
