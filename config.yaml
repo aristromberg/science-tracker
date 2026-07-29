@@ -10,7 +10,13 @@ pubmed:
   #   - "CRISPR delivery"
   #   - "GLP-1 receptor agonist AND obesity"
   #   - "Smith J[Author] AND diabetes"
-  queries: []
+  queries:
+    - "autoimmune disease"
+    - "autoimmune disease AND therapeutics"
+    - "drug development"
+    - "drug delivery technology"
+    - "novel drug target"
+    - "biotechnology AND drug discovery"
 
   # How many days back to search on each run (keep small since this runs daily).
   lookback_days: 3
@@ -46,8 +52,11 @@ curation:
   # Extra guidance appended to the curation prompt — describe what you personally care about.
   # This is what actually determines which articles get selected when queries/journals are broad.
   interest_profile: >
-    Prioritize articles with high clinical or scientific significance, novel methods,
-    or large potential impact on the field. Skip incremental or narrow-interest studies.
+    Focused on the most up-to-date science: autoimmune disease research, drug development
+    (new therapeutics, delivery technologies, drug discovery methods), and other
+    significant scientific advances of broad impact. Prioritize articles with high
+    clinical or scientific significance, novel methods, or large potential impact on the
+    field. Skip incremental or narrow-interest studies.
 
 podcast:
   title: "My Science Briefing"
