@@ -49,6 +49,9 @@ journals:
 curation:
   # Anthropic model used to select noteworthy articles and write spoken-style summaries.
   model: "claude-sonnet-4-5-20250929"
+  # Number of articles to fully narrate per episode. Any other shortlisted (noteworthy)
+  # articles beyond this count get a quick title + journal mention instead of a full summary.
+  featured_count: 4
   # Extra guidance appended to the curation prompt — describe what you personally care about.
   # This is what actually determines which articles get selected when queries/journals are broad.
   interest_profile: >

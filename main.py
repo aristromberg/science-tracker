@@ -54,23 +54,26 @@ def main() -> int:
         return 0
 
     logger.info("Asking Claude to curate and summarize...")
-    selections = curate.curate(
+    curation = curate.curate(
         new_candidates,
         model=config["curation"]["model"],
         interest_profile=config["curation"]["interest_profile"],
+        featured_count=config["curation"]["featured_count"],
     )
-    logger.info("Claude selected %d article(s)", len(selections))
+    featured = curation["featured"]
+    mentions = curation["mentions"]
+    logger.info("Claude featured %d article(s), %d quick mention(s)", len(featured), len(mentions))
 
     # Mark every candidate seen regardless of selection, so unselected articles aren't
     # re-evaluated (and re-billed) on tomorrow's run.
     seen_ids.update(a["id"] for a in new_candidates)
     dedupe.save_seen_ids(seen_ids)
 
-    if not selections:
+    if not featured:
         logger.info("No articles met the bar today — exiting without publishing an episode.")
         return 0
 
-    script_text = tts.build_script(selections, today)
+    script_text = tts.build_script(featured, mentions, today)
     audio_filename = f"{today.isoformat()}.mp3"
     audio_path = os.path.join(os.path.dirname(__file__), "docs", "audio", audio_filename)
 
@@ -86,7 +89,7 @@ def main() -> int:
     site_url = config["podcast"]["site_url"].rstrip("/")
     audio_url = f"{site_url}/audio/{audio_filename}"
 
-    episode_titles = "; ".join(s["title"] for s in selections)
+    episode_titles = "; ".join(a["title"] for a in featured)
     episodes = feed.load_episodes()
     episodes = feed.add_episode(
         episodes,
@@ -99,7 +102,7 @@ def main() -> int:
     feed.save_episodes(episodes)
     feed.render_feed(episodes, config["podcast"])
 
-    logger.info("Published episode with %d article(s) to %s", len(selections), audio_url)
+    logger.info("Published episode with %d featured article(s) to %s", len(featured), audio_url)
     return 0
 
 
