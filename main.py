@@ -59,6 +59,7 @@ def main() -> int:
         model=config["curation"]["model"],
         interest_profile=config["curation"]["interest_profile"],
         featured_count=config["curation"]["featured_count"],
+        max_mentions=config["curation"]["max_mentions"],
     )
     featured = curation["featured"]
     mentions = curation["mentions"]

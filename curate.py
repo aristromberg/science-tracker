@@ -138,7 +138,7 @@ def _feature_from_shortlist(
     return tool_use.input.get("featured", [])
 
 
-def curate(articles: list[dict], model: str, interest_profile: str, featured_count: int) -> dict:
+def curate(articles: list[dict], model: str, interest_profile: str, featured_count: int, max_mentions: int) -> dict:
     """Curate articles into 'featured' (full summary) and 'mentions' (title/journal only).
 
     Returns {"featured": [...], "mentions": [...]}.
@@ -188,6 +188,19 @@ def curate(articles: list[dict], model: str, interest_profile: str, featured_cou
         if article_id in featured_ids:
             continue
         source = by_id[article_id]
-        mentions.append({"id": article_id, "title": source["title"], "journal": source["journal"], "url": source["url"]})
+        mentions.append(
+            {
+                "id": article_id,
+                "title": source["title"],
+                "journal": source["journal"],
+                "url": source["url"],
+                "significance_score": item["significance_score"],
+            }
+        )
+    mentions.sort(key=lambda m: m["significance_score"], reverse=True)
+    dropped = max(0, len(mentions) - max_mentions)
+    if dropped:
+        logger.info("Dropping %d lowest-scored quick mention(s) to stay within max_mentions=%d", dropped, max_mentions)
+    mentions = mentions[:max_mentions]
 
     return {"featured": featured, "mentions": mentions}

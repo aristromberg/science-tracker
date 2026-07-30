@@ -8,6 +8,9 @@ from elevenlabs.client import ElevenLabs
 
 logger = logging.getLogger(__name__)
 
+# ElevenLabs' text-to-speech API rejects requests over 10,000 characters. Leave headroom.
+MAX_SCRIPT_CHARS = 9500
+
 
 def build_script(featured: list[dict], mentions: list[dict], episode_date: dt.date) -> str:
     """Build the full narration script for one episode: full summaries plus a quick mentions list."""
@@ -33,6 +36,12 @@ def build_script(featured: list[dict], mentions: list[dict], episode_date: dt.da
 
 def synthesize(text: str, voice_id: str, model_id: str, output_path: str) -> None:
     """Render text to an mp3 file at output_path via ElevenLabs."""
+    if len(text) > MAX_SCRIPT_CHARS:
+        logger.warning(
+            "Script is %d characters, exceeds ElevenLabs' limit; truncating to %d.", len(text), MAX_SCRIPT_CHARS
+        )
+        text = text[:MAX_SCRIPT_CHARS].rsplit(".", 1)[0] + "."
+
     client = ElevenLabs()  # reads ELEVENLABS_API_KEY from env
 
     audio = client.text_to_speech.convert(

@@ -52,6 +52,9 @@ curation:
   # Number of articles to fully narrate per episode. Any other shortlisted (noteworthy)
   # articles beyond this count get a quick title + journal mention instead of a full summary.
   featured_count: 4
+  # Max number of quick title+journal mentions in an episode (keeps the episode script
+  # under ElevenLabs' 10,000 character API limit). Lowest-significance mentions are dropped first.
+  max_mentions: 15
   # Extra guidance appended to the curation prompt — describe what you personally care about.
   # This is what actually determines which articles get selected when queries/journals are broad.
   interest_profile: >
