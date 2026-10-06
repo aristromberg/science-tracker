@@ -250,5 +250,12 @@
     "audio_url": "https://aristromberg.github.io/science-tracker/audio/2026-10-05.mp3",
     "audio_size_bytes": 5608220,
     "pub_date": "2026-10-05T19:45:07.022511+00:00"
+  },
+  {
+    "title": "Science Briefing \u2014 October 06, 2026",
+    "description": "CAR T cells for autoimmune diseases: 2026 update of the EBMT-ISCT-JACIE practice harmonisation and consensus recommendations.; Causality-integrated graph learning for multi-endpoint toxicity prediction.; Pancreatic Cancer KRAS Breakthrough: Drug Graveyard No More.; Nanopore sensing with machine learning-assisted analysis for real-time single-molecule detection of MDM2-p53TAD interactions.",
+    "audio_url": "https://aristromberg.github.io/science-tracker/audio/2026-10-06.mp3",
+    "audio_size_bytes": 5889088,
+    "pub_date": "2026-10-06T17:24:10.805479+00:00"
   }
 ]
